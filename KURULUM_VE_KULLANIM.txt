@@ -1,0 +1,227 @@
+================================================================================
+    AKADEMIK YAYIN ANALIZI VE ATIF AGI PROJESI
+    KURULUM VE KULLANIM KILAVUZU
+================================================================================
+
+Bu dosya, projeyi bilgisayarınızda çalıştırmak için gerekli tüm adımları
+içermektedir.
+
+================================================================================
+1. GEREKSINIMLER
+================================================================================
+
+- Python 3.8 veya üzeri versiyon yüklü olmalıdır
+- İnternet bağlantısı (API erişimi için)
+- Minimum 4GB RAM (önerilen: 8GB+)
+
+Python yüklü mü kontrol etmek için:
+    Windows: Komut İstemi (CMD) veya PowerShell'de:
+    > python --version
+    veya
+    > py --version
+
+Eğer Python yüklü değilse: https://www.python.org/downloads/ adresinden indirin.
+Kurulum sırasında "Add Python to PATH" seçeneğini işaretlemeyi unutmayın!
+
+================================================================================
+2. KURULUM ADIMLARI
+================================================================================
+
+ADIM 1: Proje Klasörüne Gidin
+-------------------------------
+Dosya Gezgini'nde proje klasörünü açın veya komut satırında:
+
+    > cd C:\...\academic_analysis
+
+(Proje klasörünün tam yolunu kullanın)
+
+ADIM 2: Gerekli Kütüphaneleri Yükleyin
+---------------------------------------
+Komut İstemi (CMD) veya PowerShell'de şu komutu çalıştırın:
+
+    > pip install -r requirements.txt
+
+NOT: Eğer "pip" komutu bulunamazsa, şunu deneyin:
+    > python -m pip install -r requirements.txt
+    veya
+    > py -m pip install -r requirements.txt
+
+Kurulum birkaç dakika sürebilir. LightGBM kütüphanesi biraz zaman alabilir.
+
+ADIM 3: Kurulumu Kontrol Edin
+-------------------------------
+Kurulum başarılı olduysa, herhangi bir hata mesajı görünmemelidir.
+
+================================================================================
+3. PROJEYI CALISTIRMA
+================================================================================
+
+ADIM 1: Komut Satırını Açın
+----------------------------
+- Windows: Başlat menüsünden "Komut İstemi" (CMD) veya "PowerShell" açın
+- Veya proje klasöründe Shift + Sağ tık → "PowerShell penceresini burada aç"
+
+ADIM 2: Proje Klasörüne Gidin
+------------------------------
+    > cd C:\...\academic_analysis
+
+ADIM 3: Projeyi Çalıştırın
+---------------------------
+    > python src/main.py
+
+veya
+
+    > py src/main.py
+
+================================================================================
+4. CALISTIRMA SURESI
+================================================================================
+
+Proje çalıştırıldığında şu adımlar otomatik olarak gerçekleşir:
+
+1. VERI TOPLAMA (5-10 dakika)
+   - Semantic Scholar API'den veri toplanır
+   - Her sorgu için yaklaşık 1-2 dakika sürebilir
+   - Rate limiting nedeniyle istekler arasında bekleme vardır
+
+2. VERI ISLEME (10-30 saniye)
+   - Veriler temizlenir ve yazarlar çıkarılır
+   - Yazar istatistikleri hesaplanır
+
+3. NETWORK ANALIZI (10-30 saniye)
+   - Ortak yazarlık ağı oluşturulur
+   - Ağ metrikleri hesaplanır
+
+4. MAKINE OGRENMESI (10-30 saniye)
+   - 3 farklı ML modeli eğitilir (RF, LGBM, DT)
+   - Model performansları karşılaştırılır
+   - En iyi model seçilir
+
+5. GORSELLESTIRME (5-10 saniye)
+   - Ağ görselleştirmesi oluşturulur
+
+TOPLAM SURE: Yaklaşık 10-15 dakika (veri toplama en uzun süren kısım)
+
+================================================================================
+5. CIKTI DOSYALARI
+================================================================================
+
+Proje çalıştıktan sonra "results" klasöründe şu dosyalar oluşur:
+
+- author_impact_scores.csv      → Tüm yazarlar için etki skorları
+- network_metrics.csv            → Ağ analizi metrikleri
+- top_influential_authors.csv   → En etkili 20 yazar
+- clustered_authors.csv         → Kümeleme sonuçları
+- citation_network.png          → Ağ görselleştirmesi
+
+"data" klasöründe:
+- publications.csv              → Toplanan ham veriler
+
+================================================================================
+6. OZELLESTIRME
+================================================================================
+
+Arama sorgularını değiştirmek için:
+"src/main.py" dosyasını bir metin editörü ile açın ve şu satırı bulun:
+
+    queries = ["machine learning", "deep learning", "neural networks"]
+
+İstediğiniz sorguları ekleyebilir veya değiştirebilirsiniz.
+
+================================================================================
+7. SIK KARSILASILAN SORUNLAR VE COZUMLERI
+================================================================================
+
+SORUN 1: "python: command not found" veya "python is not recognized"
+COZUM: 
+    - Python yüklü değil veya PATH'e eklenmemiş
+    - "py" komutunu deneyin: > py src/main.py
+    - Python'u yeniden yükleyin ve "Add Python to PATH" seçeneğini işaretleyin
+
+SORUN 2: "pip: command not found"
+COZUM:
+    > python -m pip install -r requirements.txt
+    veya
+    > py -m pip install -r requirements.txt
+
+SORUN 3: "ModuleNotFoundError: No module named 'lightgbm'"
+COZUM:
+    > pip install lightgbm
+    veya
+    > python -m pip install lightgbm
+
+SORUN 4: "429 Client Error: Too Many Requests"
+COZUM:
+    - Bu normal bir durumdur, sistem otomatik olarak bekleyip tekrar dener
+    - Biraz bekleyin, işlem devam edecektir
+
+SORUN 5: Veri toplama çok yavaş
+COZUM:
+    - Bu normaldir, API rate limit nedeniyle istekler arasında bekleme vardır
+    - Semantic Scholar API: 100 istek/5 dakika limiti vardır
+    - Sabırla bekleyin, işlem tamamlanacaktır
+
+SORUN 6: "data" veya "results" klasörü bulunamadı
+COZUM:
+    - Bu klasörler otomatik oluşturulur, sorun değildir
+    - Eğer hata alırsanız, manuel olarak oluşturabilirsiniz
+
+================================================================================
+8. API KEY KULLANIMI (OPSIYONEL)
+================================================================================
+
+API key kullanarak rate limit'i artırabilirsiniz (100 → 5000 istek/5 dakika):
+
+1. https://www.semanticscholar.org/product/api adresinden API key alın
+2. "src/main.py" dosyasını açın
+3. Şu satırı bulun:
+   
+   collector = ScholarDataCollector(api_key=None, ...)
+
+4. Şu şekilde değiştirin:
+   
+   collector = ScholarDataCollector(api_key="YOUR_API_KEY", ...)
+
+API key olmadan da proje çalışır, sadece daha yavaş olur.
+
+================================================================================
+9. DESTEK VE YARDIM
+================================================================================
+
+Sorun yaşarsanız:
+1. README.md dosyasını kontrol edin
+2. Hata mesajlarını okuyun (genellikle çözümü içerir)
+3. Python ve kütüphane versiyonlarını kontrol edin
+
+Önemli: Proje çalışırken internet bağlantısı kesilmemelidir!
+
+================================================================================
+10. PROJE YAPISI
+================================================================================
+
+academic_analysis/
+├── src/                    → Kaynak kodlar
+│   ├── main.py            → Ana uygulama (BURADAN CALISTIRILIR)
+│   ├── data_collector.py  → Veri toplama
+│   ├── data_processor.py  → Veri işleme
+│   ├── citation_network.py → Network analizi
+│   └── ml_analyzer.py     → ML analizleri
+├── data/                  → Veri dosyaları (otomatik oluşur)
+├── results/               → Sonuç dosyaları (otomatik oluşur)
+├── requirements.txt       → Bağımlılıklar
+├── config.py             → Yapılandırma
+└── README.md             → Proje açıklaması
+
+================================================================================
+SON NOTLAR
+================================================================================
+
+- Proje ilk çalıştırıldığında veri toplama işlemi zaman alabilir
+- İnternet bağlantısı gereklidir
+- Tüm sonuçlar "results" klasörüne kaydedilir
+- Proje çalışırken konsol çıktılarını takip edebilirsiniz
+
+İYI CALISMALAR!
+
+================================================================================
+
