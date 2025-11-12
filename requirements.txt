@@ -1,0 +1,30 @@
+# API data collection
+requests>=2.31.0
+
+# Data processing and analysis
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Network analysis
+networkx==3.2.1
+
+# Machine Learning
+scikit-learn>=1.4.0
+scipy>=1.12.0
+lightgbm>=4.1.0
+
+# Visualization
+matplotlib>=3.9.0
+seaborn>=0.13.0
+plotly>=5.18.0
+
+# Progress bars
+tqdm==4.66.1
+
+# Utilities
+python-dotenv==1.0.0
+pydantic>=2.9.0
+
+# Optional: For community detection
+python-louvain==0.16
+
